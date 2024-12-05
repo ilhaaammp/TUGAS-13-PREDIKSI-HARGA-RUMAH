@@ -30,10 +30,11 @@ def main():
         os.makedirs('models')
 
     # Tambahkan deskripsi metode
-    st.write("**METODE: PREDIKSI HARGA RUMAH**")
+    st.write("**METODE: LINEAR REGRESSION DAN RANDOM FOREST**")
     st.write("""
-    Aplikasi ini menggunakan metode sederhana untuk memprediksi harga rumah 
-    berdasarkan luas tanah, luas bangunan, dan jumlah kamar.
+    Aplikasi ini menggunakan dua metode machine learning untuk memprediksi harga rumah:
+    - **Linear Regression**: Untuk memahami hubungan linear antara fitur (luas tanah, luas bangunan, jumlah kamar) dengan harga rumah.
+    - **Random Forest**: Model ensemble berbasis pohon keputusan yang lebih kompleks untuk menangkap hubungan non-linear dan menghasilkan prediksi yang lebih akurat.
     """)
 
     # Input parameter

@@ -1,12 +1,36 @@
 import os
 import sys
 
-# Tambahkan penanganan import
+# Fungsi untuk memeriksa dan menginstal library yang hilang
+def check_and_install_libraries():
+    libraries = [
+        'streamlit', 'numpy', 'pandas', 
+        'matplotlib', 'seaborn', 'scikit-learn'
+    ]
+    missing_libs = []
+
+    for lib in libraries:
+        try:
+            __import__(lib)
+        except ImportError:
+            missing_libs.append(lib)
+    
+    if missing_libs:
+        print(f"Installing missing libraries: {missing_libs}")
+        import subprocess
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + missing_libs)
+
+# Jalankan pemeriksaan library
+check_and_install_libraries()
+
+# Impor library setelah instalasi
 try:
     import pickle
     import numpy as np
     import streamlit as st
     import pandas as pd
+    import matplotlib
+    matplotlib.use('Agg')  # Gunakan backend non-interaktif
     import matplotlib.pyplot as plt
     import seaborn as sns
     from sklearn.linear_model import LinearRegression
@@ -102,37 +126,37 @@ def main():
 
             # Grafik 1: Perbandingan Nilai Aktual vs Prediksi
             st.write("**Perbandingan Nilai Aktual vs Prediksi**")
-            fig1, ax1 = plt.subplots(figsize=(8, 6))
-            ax1.plot(actual_prices, label='Actual Prices', marker='o')
-            ax1.plot(predicted_rf, label='Random Forest Predictions', marker='s')
-            ax1.plot(predicted_lr, label='Linear Regression Predictions', marker='^')
-            ax1.legend()
-            ax1.set_title('Actual vs Predicted Prices')
-            ax1.set_xlabel('Sample Index')
-            ax1.set_ylabel('Price')
-            st.pyplot(fig1)
+            plt.figure(figsize=(8, 6))
+            plt.plot(actual_prices, label='Actual Prices', marker='o')
+            plt.plot(predicted_rf, label='Random Forest Predictions', marker='s')
+            plt.plot(predicted_lr, label='Linear Regression Predictions', marker='^')
+            plt.legend()
+            plt.title('Actual vs Predicted Prices')
+            plt.xlabel('Sample Index')
+            plt.ylabel('Price')
+            st.pyplot(plt)
+            plt.close()
 
             # Grafik 2: Feature Importance
             st.write("**Feature Importance (Random Forest)**")
-            fig2, ax2 = plt.subplots(figsize=(8, 6))
-            sns.barplot(x=importances, y=features, ax=ax2, palette='viridis')
-            ax2.set_title('Feature Importance (Random Forest)')
-            ax2.set_xlabel('Importance')
-            ax2.set_ylabel('Features')
-            st.pyplot(fig2)
+            plt.figure(figsize=(8, 6))
+            sns.barplot(x=importances, y=features, palette='viridis')
+            plt.title('Feature Importance (Random Forest)')
+            plt.xlabel('Importance')
+            plt.ylabel('Features')
+            st.pyplot(plt)
+            plt.close()
 
             # Grafik 3: Distribusi Kesalahan
             st.write("**Distribusi Kesalahan**")
-            fig3, ax3 = plt.subplots(figsize=(8, 6))
-            sns.histplot(residuals_rf, kde=True, color='blue', label='Random Forest', bins=10, ax=ax3)
-            sns.histplot(residuals_lr, kde=True, color='red', label='Linear Regression', bins=10, ax=ax3)
-            ax3.set_title('Residual Distribution')
-            ax3.set_xlabel('Residuals')
-            ax3.legend()
-            st.pyplot(fig3)
+            plt.figure(figsize=(8, 6))
+            sns.histplot(residuals_rf, kde=True, color='blue', label='Random Forest', bins=10)
+            sns.histplot(residuals_lr, kde=True, color='red', label='Linear Regression', bins=10)
+            plt.title('Residual Distribution')
+            plt.xlabel('Residuals')
+            plt.legend()
+            st.pyplot(plt)
+            plt.close()
 
         except Exception as e:
             st.error(f"Gagal memuat model atau melakukan prediksi: {e}")
-
-if __name__ == "__main__":
-    main()

@@ -1,5 +1,5 @@
 import os
-import joblib
+import pickle
 import numpy as np
 import streamlit as st
 import pandas as pd
@@ -31,10 +31,13 @@ def main():
         # Cek keberadaan file
         if all(os.path.exists(path) for path in [model_path, scaler_path, imputer_path]):
             try:
-                # Muat model, scaler, dan imputer
-                model = joblib.load(model_path)
-                scaler = joblib.load(scaler_path)
-                imputer = joblib.load(imputer_path)
+                # Muat model, scaler, dan imputer menggunakan pickle
+                with open(model_path, 'rb') as f:
+                    model = pickle.load(f)
+                with open(scaler_path, 'rb') as f:
+                    scaler = pickle.load(f)
+                with open(imputer_path, 'rb') as f:
+                    imputer = pickle.load(f)
 
                 # Siapkan data input untuk prediksi
                 input_data = np.array([[luas_tanah, luas_bangunan, jumlah_kamar]])

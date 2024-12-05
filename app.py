@@ -1,5 +1,5 @@
 import os
-import sys
+# import sys
 
 # Impor library dengan penanganan yang lebih aman
 try:
